@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- autor MArlon dos Santos -->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        
+        
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+
+    <Style>
+        
+        body{
+            background-color: #f3f3f3f3;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+        .pergunta{
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f3f3f3;
+            border: none;
+            cursor: pointer;
+            border-bottom: 1px solid;
+            width: 100vw;
+            padding: 0 0 3% 0;
+            text-align: left;
+            outline: none;
+            transition: 0.4s;
+            font-size: 10pt;
+            margin-left: -1%;
+        }
+        .pergunta.active{
+            color: #b60606f3;
+        }
+        .resposta{
+            font-size: 9pt;;
+            display: none;
+            
+            padding: 0 0 0 2.8%;
+            border-bottom: 1px solid;
+
+        }
+        .resposta.show{
+            display: block;
+            color: #400010;
+        }
+        div.resposta{
+            max-height:0;
+            overflow: hidden;
+            transition: o.6s ease-in-out;
+            padding: 0 18px;
+            opacity:0;
+
+            padding: 0 18px;
+ 
+        }
+        div.resposta.show{
+            opacity: 1;
+            max-width: 500px;
+        }
+
+        button.pergunta:after {
+            content: "";
+            border: solid transparent;
+            box-shadow: 5px -5px 0 0px #400010 inset;
+            border-width: 0 0 9px 9px;
+            width:9px;    /*o tamanho do contende */
+            height:9px;
+            float: left;
+            transform:rotate(225deg) ;
+            padding: 2px 0 0 3px;
+            margin-top: -0.3%;
+
+          
+        }
+  
+        button.pergunta.active:after{
+            box-shadow: 5px -5px 0 0px #b60606f3 inset; 
+            border-width: 0 0 15px 15px;
+            width:10px;    /*o tamanho do contende */
+            height:10px;
+            float: left;
+            transform:rotate(-45deg) ;
+            padding: 2 0 0 0;
+            margin: 3px 0 0 0;}
+        
+    @keyframes anima {
+                      0%{
+                         transform:scale(1);
+                      }
+                      100%{
+                         transform: scale(1.2);
+                      }
+                     }
+             
+                    .buto1 button{
+                         color: red;
+                     }
+                     
+                   .buto1 button{
+                     animation-name: anima;
+                     animation-duration: 0.5s;
+                     animation-timing-function: ease-out;
+                     animation-iteration-count:infinite ;
+                     animation-direction: alternate;
+                     cursor: pointer;
+                    }
+        
+    </style>
+</head>
+
+<body>
+     <!-- <button class="pergunta">Quais são as formas de pagamento?</button>
+    <p class="resposta">
+        Você pode realizar o pagamento por Cartão de Crédito, Boleto Bancário, PIX e Débito
+        Bancário.
+    </p>
+
+    <button class="pergunta">Como vou receber acesso ao produto?</button>
+    <p class="resposta">
+        Assim que a sua compra for confirmada, você receberá um e-mail com o seu acesso à nossa plataforma. Os
+        pagamentos
+        realizados por boleto, podem demorar até 2 dias úteis para serem confirmados.
+    </p>
+
+    <button class="pergunta">A plataforma de pagamentos é segura?</button>
+    <p class="resposta">
+        Sim, a Kiwify é uma das maiores empresas de pagamento do Brasil. Nossos alunos nunca tiveram nenhum problema de
+        segurança ao realizarem o pagamento.
+    </p>
+
+    <button class="pergunta">O conteúdo é ao vivo ou gravado?</button>
+    <p class="resposta"> O conteúdo do Protocolo Zero Barriga é 100% gravado em PDF, com o material pedagógico completo.</p>
+
+    <button class="pergunta">Em quanto tempo posso perder o peso que preciso?</button>
+    <p class="resposta">
+        Cada organismo funciona de uma maneira diferente, por isso, é difícil estipular um tempo médio para o início da
+        perda de peso. No entanto, é comum que as pessoas comecem a notar diferença no peso em duas semanas.
+    </p>
+    <button class="pergunta">Por quanto tempo vou ter acesso ao material?</button>
+    <p class="resposta">
+        Você terá acesso vitalício a versão 2022 do Protocolo Programa 21D
+
+    </p> <button class="pergunta">Quanto tempo o organismo leva para entrar em processo de emagrecimento?</button>
+    <p class="resposta">
+        O tempo para que o organismo entre por completo em um processo de emagrecimento varia de uma pessoa para outra,
+        podendo ser de alguns dias, ou até mesmo semanas. Além disso, no início é possível que você sinta muito saciada
+        e
+        sem fome, é algo normal.
+    </p>
+
+    <button class="pergunta">O que acontece se eu me arrepender da compra?</button>
+    <p class="resposta">
+        Caso você se arrependa da aquisição do Protocolo Zero Barriga e queria desistir dele, basta entrar em contato
+        com
+        nossa equipe de atendimento, que todos os passos para o cancelamento e a devolução do dinheiro investido lhe
+        serão
+        fornecidos.
+    </p>
+    <button class="pergunta">Moro fora do país, consigo me matricular?</button>
+    <p class="resposta"> Sim, a Kiwify aceita moedas do mundo inteiro e você também pode efetuar o pagamento pelo PayPal.</p> -->
+ 
+    <!-- <div style="margin-top: 15%; text-align: center;">
+    <img src="https://www.gratispng.com/png-grseov/download.html" alt="">
+
+            </div>
+              
+             <div class="buto1">
+                         
+                              <div
+                                  style=" 
+                                  width:30%; margin:0 0 10% 0; align-items:  center; text-align: center;">
+                                      <a href="https://pay.kiwify.com.br/pxMrApG" target="_blank">
+                                    <button  style="width: 225%; margin: 45% 0 20% 60%;                          font-size:8pt;
+                                      height: 40px; 
+                                      background: #860321; color: #ffffff;
+                                      border-color: #860321;
+                                      border-radius: 50px;"><b style="font-weight:750 ;">COMEÇAR AGORA (CLIQUE AQUI)</b>
+                                      </button></a> 
+             
+                                 
+                              </div>
+                         
+             </div> -->
+             
+                            
+                         <div style="text-align: center;">
+                <!-- prova social -->
+                <img src="/img/adriana (1).png" alt="">
+
+                    
+             </div> 
+
+
+<div> 
+    <!-- final  -->
+        <img src="/img/final.png" alt="">
+        
+</div>
+            
+            
+       </div>
+    
+
+
+
+
+
+    <script>
+        let movi = document.getElementsByClassName("pergunta");
+        let v;
+
+        for (v = 0; v < movi.length; v++ ){
+            movi[v].onclick = function(){
+                this.classList.toggle("active");
+                this.nextElementSibling.classList.toggle("show")
+
+            }
+        }
+    </script>
+
+ 
+
+</body>
+
+</html>
