@@ -195,9 +195,183 @@
             font-size: 0.8rem;
         }
 
+        .trade-card {
+            padding-bottom: 32px;
+        }
+
+        .trade-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        @media (min-width: 960px) {
+            .trade-grid {
+                grid-template-columns: minmax(0, 1.6fr) minmax(240px, 1fr);
+                align-items: stretch;
+            }
+        }
+
+        .trade-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .trade-actions {
+            background: rgba(18, 23, 37, 0.65);
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .trade-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .trade-field label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+        }
+
+        .trade-actions select,
+        .trade-actions input[type="number"] {
+            background: var(--surface-light);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .trade-actions select:focus,
+        .trade-actions input[type="number"]:focus {
+            outline: 2px solid rgba(255, 51, 102, 0.35);
+            outline-offset: 2px;
+        }
+
+        .trade-buttons {
+            display: grid;
+            gap: 12px;
+        }
+
+        @media (min-width: 520px) {
+            .trade-buttons {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .trade-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 18px 16px;
+            border-radius: 16px;
+            border: none;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(10, 15, 24, 0.85);
+            box-shadow: 0 24px 38px -28px rgba(15, 23, 42, 0.9);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .trade-button strong {
+            font-size: 1.1rem;
+            letter-spacing: normal;
+        }
+
+        .trade-button span {
+            font-size: 0.75rem;
+            color: rgba(10, 15, 24, 0.7);
+        }
+
+        .trade-button.call {
+            background: linear-gradient(135deg, rgba(50, 213, 131, 0.95), rgba(50, 213, 131, 0.7));
+        }
+
+        .trade-button.put {
+            background: linear-gradient(135deg, rgba(249, 112, 102, 0.95), rgba(249, 112, 102, 0.7));
+        }
+
+        .trade-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .trade-button.call:hover {
+            box-shadow: 0 28px 45px -28px rgba(50, 213, 131, 0.55);
+        }
+
+        .trade-button.put:hover {
+            box-shadow: 0 28px 45px -28px rgba(249, 112, 102, 0.55);
+        }
+
         .chart-wrapper {
             position: relative;
             min-height: 320px;
+            background: radial-gradient(circle at top right, rgba(255, 51, 102, 0.12), rgba(10, 15, 24, 0.85));
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            padding: 16px;
+            overflow: hidden;
+        }
+
+        .chart-wrapper canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .chart-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            pointer-events: none;
+            background: radial-gradient(circle at center, rgba(18, 24, 38, 0.2), rgba(18, 24, 38, 0.7));
+            border-radius: 18px;
+            opacity: 0.75;
+            transition: opacity 0.3s ease;
+        }
+
+        .chart-overlay.active {
+            opacity: 1;
+        }
+
+        .chart-overlay .overlay-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .chart-overlay .overlay-timer {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--accent-contrast);
+            text-shadow: 0 0 18px rgba(10, 15, 30, 0.75);
+        }
+
+        .chart-overlay .overlay-meta {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .chart-overlay.critical .overlay-timer {
+            color: var(--negative);
+            text-shadow: 0 0 18px rgba(249, 112, 102, 0.65);
         }
 
         .chart-controls {
@@ -368,62 +542,73 @@
         <p class="message-area" id="walletMessage">Selecione um ativo e defina o valor da operação para começar.</p>
     </article>
 
-    <article class="card">
-        <h2>Nova operação</h2>
-        <div class="chart-controls" style="margin-bottom: 20px;">
-            <label>
-                Ativo
-                <select id="assetSelect">
-                    <option value="EURUSD">EUR/USD</option>
-                    <option value="BTCUSD">BTC/USD</option>
-                    <option value="WDOQ24">Mini Dólar</option>
-                    <option value="IBOV">IBOVESPA</option>
-                </select>
-            </label>
-            <label>
-                Valor (R$)
-                <input type="number" id="amountInput" min="10" step="10" value="100">
-            </label>
-            <label>
-                Expiração (min)
-                <select id="expirySelect">
-                    <option value="1">1</option>
-                    <option value="5" selected>5</option>
-                    <option value="15">15</option>
-                    <option value="30">30</option>
-                </select>
-            </label>
+    <article class="card trade-card">
+        <h2>Terminal de operações</h2>
+        <div class="trade-grid">
+            <div class="trade-chart">
+                <div class="chart-controls">
+                    <label>
+                        Intervalo
+                        <select id="timeframeSelect">
+                            <option value="20">1 minuto</option>
+                            <option value="40" selected>5 minutos</option>
+                            <option value="80">15 minutos</option>
+                            <option value="120">1 hora</option>
+                        </select>
+                    </label>
+                    <label>
+                        Volatilidade
+                        <input type="range" id="volatilityRange" min="5" max="25" value="12">
+                    </label>
+                    <button class="ghost-button" type="button" id="refreshChart">Atualizar gráfico</button>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="priceChart" height="320"></canvas>
+                    <div class="chart-overlay" id="chartOverlay">
+                        <span class="overlay-label">Próxima expiração</span>
+                        <span class="overlay-timer" id="chartTimer">--:--</span>
+                        <span class="overlay-meta" id="chartTimerMeta">Nenhuma operação ativa</span>
+                    </div>
+                </div>
+                <p class="message-area" id="chartMessage">Ajuste o intervalo e monitore a contagem regressiva para sincronizar suas entradas.</p>
+            </div>
+            <div class="trade-actions">
+                <div class="trade-field">
+                    <label for="assetSelect">Ativo</label>
+                    <select id="assetSelect">
+                        <option value="EURUSD">EUR/USD</option>
+                        <option value="BTCUSD">BTC/USD</option>
+                        <option value="WDOQ24">Mini Dólar</option>
+                        <option value="IBOV">IBOVESPA</option>
+                    </select>
+                </div>
+                <div class="trade-field">
+                    <label for="amountInput">Valor (R$)</label>
+                    <input type="number" id="amountInput" min="10" step="10" value="100">
+                </div>
+                <div class="trade-field">
+                    <label for="expirySelect">Expiração (min)</label>
+                    <select id="expirySelect">
+                        <option value="1">1</option>
+                        <option value="5" selected>5</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+                <div class="trade-buttons">
+                    <button type="button" id="callBtn" class="trade-button call">
+                        <strong>Call</strong>
+                        <span>Comprar</span>
+                    </button>
+                    <button type="button" id="putBtn" class="trade-button put">
+                        <strong>Put</strong>
+                        <span>Vender</span>
+                    </button>
+                </div>
+                <p class="message-area" id="tradeMessage">Defina o ativo, valor e expiração e utilize os botões ao lado para enviar ordens instantâneas.</p>
+            </div>
         </div>
-        <div class="actions">
-            <button class="primary" type="button" id="callBtn">Call · Comprar</button>
-            <button class="secondary" type="button" id="putBtn">Put · Vender</button>
-        </div>
-        <p class="message-area" id="tradeMessage">Use o gráfico para encontrar regiões estratégicas e confirmar sua entrada.</p>
     </article>
-</section>
-
-<section class="card">
-    <h2>Gráfico de preço interativo</h2>
-    <div class="chart-controls">
-        <label>
-            Intervalo
-            <select id="timeframeSelect">
-                <option value="20">1 minuto</option>
-                <option value="40" selected>5 minutos</option>
-                <option value="80">15 minutos</option>
-                <option value="120">1 hora</option>
-            </select>
-        </label>
-        <label>
-            Volatilidade
-            <input type="range" id="volatilityRange" min="5" max="25" value="12">
-        </label>
-        <button class="ghost-button" type="button" id="refreshChart">Atualizar gráfico</button>
-    </div>
-    <div class="chart-wrapper">
-        <canvas id="priceChart" height="320"></canvas>
-    </div>
-    <p class="message-area" id="chartMessage">Clique no gráfico para marcar uma zona de interesse e comparar com operações passadas.</p>
 </section>
 
 <section class="grid grid-columns-3">
@@ -521,9 +706,42 @@
     const walletMessage = document.getElementById('walletMessage');
     const tradeMessage = document.getElementById('tradeMessage');
     const chartMessage = document.getElementById('chartMessage');
+    const chartTimer = document.getElementById('chartTimer');
+    const chartTimerMeta = document.getElementById('chartTimerMeta');
+    const chartOverlay = document.getElementById('chartOverlay');
+    let chartTimerInterval = null;
 
     function currency(value) {
         return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function formatPrice(value, decimals) {
+        return value.toLocaleString('pt-BR', {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals
+        });
+    }
+
+    function getAssetConfig(code) {
+        const configs = {
+            EURUSD: { base: 1.104, decimals: 4 },
+            BTCUSD: { base: 27450, decimals: 2 },
+            WDOQ24: { base: 5.12, decimals: 3 },
+            IBOV: { base: 116500, decimals: 0 }
+        };
+        return configs[code] || configs.EURUSD;
+    }
+
+    function getSelectedAsset() {
+        const select = document.getElementById('assetSelect');
+        const fallback = { code: 'EURUSD', label: 'EUR/USD', ...getAssetConfig('EURUSD') };
+        if (!select) {
+            return fallback;
+        }
+        const code = select.value;
+        const label = select.options[select.selectedIndex]?.text || code;
+        const config = getAssetConfig(code);
+        return { code, label, ...config };
     }
 
     function updateWalletTiles() {
@@ -541,13 +759,13 @@
         }
     }
 
-    function generateDataPoints(points, base = 1.104, volatility = 12) {
+    function generateDataPoints(points, base = 1.104, volatility = 12, decimals = 4) {
         const data = [];
         let current = base;
         for (let i = 0; i < points; i++) {
-            const variation = (Math.random() - 0.5) * (volatility / 1000);
-            current = Math.max(0.8, current + variation);
-            data.push(Number(current.toFixed(4)));
+            const percentage = (Math.random() - 0.5) * (volatility / 600);
+            current = Math.max(base * 0.4, current * (1 + percentage));
+            data.push(Number(current.toFixed(decimals)));
         }
         return data;
     }
@@ -565,14 +783,17 @@
     function drawChart() {
         const points = Number(document.getElementById('timeframeSelect').value);
         const volatility = Number(document.getElementById('volatilityRange').value);
-        const data = generateDataPoints(points, 1.104, volatility);
+        const asset = getSelectedAsset();
+        const data = generateDataPoints(points, asset.base, volatility, asset.decimals);
         const labels = generateLabels(points);
 
         if (chartInstance) {
             chartInstance.data.labels = labels;
             chartInstance.data.datasets[0].data = data;
+            chartInstance.data.datasets[0].label = asset.label;
+            chartInstance.options.plugins.tooltip.callbacks.label = context => `Preço: ${formatPrice(context.parsed.y, asset.decimals)}`;
             chartInstance.update();
-            chartMessage.textContent = `Gráfico atualizado com ${points} candles e volatilidade ${volatility}.`;
+            chartMessage.textContent = `Gráfico de ${asset.label} atualizado com ${points} candles e volatilidade ${volatility}.`;
             return;
         }
 
@@ -582,7 +803,7 @@
                 labels,
                 datasets: [
                     {
-                        label: 'EUR/USD',
+                        label: asset.label,
                         data,
                         borderColor: 'rgba(255, 51, 102, 0.85)',
                         borderWidth: 2,
@@ -619,7 +840,7 @@
                     legend: { display: false },
                     tooltip: {
                         callbacks: {
-                            label: context => `Preço: ${context.parsed.y}`
+                            label: context => `Preço: ${formatPrice(context.parsed.y, asset.decimals)}`
                         }
                     }
                 },
@@ -629,6 +850,7 @@
                 }
             }
         });
+        chartMessage.textContent = `Gráfico de ${asset.label} carregado com ${points} candles e volatilidade ${volatility}.`;
     }
 
     function renderOpenPositions() {
@@ -640,6 +862,7 @@
         }
 
         openPositions.forEach(position => {
+            const expiryTime = new Date(position.expiresAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             const card = document.createElement('div');
             card.className = 'position-card';
             card.innerHTML = `
@@ -648,7 +871,7 @@
                         <strong>${position.asset}</strong>
                         <span class="badge ${position.direction.toLowerCase()}">${position.direction}</span>
                     </header>
-                    <small style="color: var(--text-secondary);">Entrada ${position.entryPrice} · R$ ${position.amount.toFixed(2)} · expira em ${position.expiry} min</small>
+                    <small style="color: var(--text-secondary);">Entrada ${formatPrice(position.entryPrice, position.decimals)} · ${currency(position.amount)} · expira às ${expiryTime}</small>
                 </div>
                 <button class="primary" type="button" data-id="${position.id}">Encerrar</button>
             `;
@@ -657,7 +880,7 @@
         });
     }
 
-    function closePosition(id) {
+    function closePosition(id, auto = false) {
         const index = openPositions.findIndex(item => item.id === id);
         if (index === -1) return;
         const [position] = openPositions.splice(index, 1);
@@ -666,10 +889,11 @@
         wallet.allocated -= position.amount;
         wallet.balance += payout;
         const result = outcome === 'win' ? `lucro de ${currency(payout - position.amount)}` : 'perda total';
-        walletMessage.innerHTML = `Operação ${position.direction} em ${position.asset} encerrada com <strong>${result}</strong>.`;
+        walletMessage.innerHTML = `Operação ${position.direction} em ${position.asset} ${auto ? 'expirou automaticamente' : 'foi encerrada'} com <strong>${result}</strong>.`;
         appendHistory(position, outcome, payout);
         updateWalletTiles();
         renderOpenPositions();
+        ensureChartTimer();
     }
 
     function appendHistory(position, outcome, payout) {
@@ -685,10 +909,72 @@
         `;
     }
 
+    function tickChartTimer() {
+        if (!chartTimer || !chartTimerMeta) {
+            return;
+        }
+
+        if (!openPositions.length) {
+            if (chartOverlay) {
+                chartOverlay.classList.remove('active');
+                chartOverlay.classList.remove('critical');
+            }
+            chartTimer.textContent = '--:--';
+            chartTimerMeta.textContent = 'Nenhuma operação ativa';
+            return;
+        }
+
+        const soonest = openPositions.reduce((previous, current) => current.expiresAt < previous.expiresAt ? current : previous);
+        const remainingSeconds = Math.floor((soonest.expiresAt - Date.now()) / 1000);
+
+        if (remainingSeconds <= 0) {
+            closePosition(soonest.id, true);
+            return;
+        }
+
+        const minutes = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+        const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
+        chartTimer.textContent = `${minutes}:${seconds}`;
+        const expiryTime = new Date(soonest.expiresAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        chartTimerMeta.textContent = `${soonest.direction} · ${soonest.asset} · ${expiryTime}`;
+        if (chartOverlay) {
+            chartOverlay.classList.add('active');
+            if (remainingSeconds <= 30) {
+                chartOverlay.classList.add('critical');
+            } else {
+                chartOverlay.classList.remove('critical');
+            }
+        }
+    }
+
+    function ensureChartTimer() {
+        if (openPositions.length) {
+            if (!chartTimerInterval) {
+                chartTimerInterval = setInterval(tickChartTimer, 1000);
+            }
+            tickChartTimer();
+        } else {
+            if (chartTimerInterval) {
+                clearInterval(chartTimerInterval);
+                chartTimerInterval = null;
+            }
+            if (chartOverlay) {
+                chartOverlay.classList.remove('active');
+                chartOverlay.classList.remove('critical');
+            }
+            if (chartTimer) {
+                chartTimer.textContent = '--:--';
+            }
+            if (chartTimerMeta) {
+                chartTimerMeta.textContent = 'Nenhuma operação ativa';
+            }
+        }
+    }
+
     function openTrade(direction) {
         const amount = Number(document.getElementById('amountInput').value);
-        const asset = document.getElementById('assetSelect').value;
-        const expiry = document.getElementById('expirySelect').value;
+        const asset = getSelectedAsset();
+        const expiryMinutes = Number(document.getElementById('expirySelect').value);
 
         if (Number.isNaN(amount) || amount < 10) {
             tradeMessage.innerHTML = '<strong>Valor inválido.</strong> Defina pelo menos R$ 10,00 para operar.';
@@ -700,27 +986,38 @@
             return;
         }
 
+        if (Number.isNaN(expiryMinutes) || expiryMinutes <= 0) {
+            tradeMessage.innerHTML = '<strong>Expiração inválida.</strong> Escolha um tempo de contrato válido.';
+            return;
+        }
+
         wallet.balance -= amount;
         wallet.allocated += amount;
-        const entryPrice = chartInstance ? chartInstance.data.datasets[0].data.slice(-1)[0] : generateDataPoints(1)[0];
+        const entrySeries = chartInstance ? chartInstance.data.datasets[0].data.slice(-1)[0] : generateDataPoints(1, asset.base, 12, asset.decimals)[0];
+        const entryPrice = Number(entrySeries);
         const newPosition = {
             id: ++positionCounter,
-            asset,
+            asset: asset.label,
+            assetCode: asset.code,
             direction,
             amount,
-            expiry,
-            entryPrice
+            expiry: expiryMinutes,
+            entryPrice,
+            decimals: asset.decimals,
+            expiresAt: Date.now() + expiryMinutes * 60000
         };
         openPositions.push(newPosition);
-        tradeMessage.innerHTML = `Ordem <strong>${direction}</strong> em ${asset} aberta com sucesso. Aguarde o tempo de expiração.`;
+        tradeMessage.innerHTML = `Ordem <strong>${direction}</strong> em ${asset.label} aberta com sucesso. Acompanhe a contagem regressiva no gráfico.`;
         updateWalletTiles();
         renderOpenPositions();
+        ensureChartTimer();
     }
 
     function attachEvents() {
         document.getElementById('timeframeSelect').addEventListener('change', drawChart);
         document.getElementById('volatilityRange').addEventListener('input', drawChart);
         document.getElementById('refreshChart').addEventListener('click', drawChart);
+        document.getElementById('assetSelect').addEventListener('change', drawChart);
         document.getElementById('callBtn').addEventListener('click', () => openTrade('Call'));
         document.getElementById('putBtn').addEventListener('click', () => openTrade('Put'));
         document.getElementById('depositBtn').addEventListener('click', () => {
@@ -742,7 +1039,8 @@
                 const point = points[0];
                 const price = chartInstance.data.datasets[point.datasetIndex].data[point.index];
                 const time = chartInstance.data.labels[point.index];
-                chartMessage.textContent = `Zona marcada às ${time} com preço ${price}. Considere este nível para novas entradas.`;
+                const asset = getSelectedAsset();
+                chartMessage.textContent = `Zona marcada às ${time} com preço ${formatPrice(price, asset.decimals)} em ${asset.label}. Considere este nível para novas entradas.`;
             }
         });
     }
@@ -751,6 +1049,7 @@
         updateWalletTiles();
         drawChart();
         attachEvents();
+        ensureChartTimer();
     });
 </script>
 </body>
