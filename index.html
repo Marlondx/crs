@@ -1,235 +1,1056 @@
 <!DOCTYPE html>
-<html lang="pt-Br">
-    <head>
-        <!-- autor MArlon dos Santos -->
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        
-        
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Investimentos Binários</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <style>
+        :root {
+            color-scheme: light dark;
+            --bg: #0a0d13;
+            --surface: #121725;
+            --surface-light: #1f2637;
+            --accent: #ff3366;
+            --accent-contrast: #ffffff;
+            --positive: #32d583;
+            --negative: #f97066;
+            --text-primary: #e5e7f0;
+            --text-secondary: #94a3b8;
+            --border: rgba(148, 163, 184, 0.2);
+            --shadow: 0 24px 60px -25px rgba(15, 23, 42, 0.55);
+        }
 
-    <Style>
-        
-        body{
-            background-color: #f3f3f3f3;
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden;
+        * {
+            box-sizing: border-box;
         }
-        .pergunta{
-            font-family: 'Poppins', sans-serif;
-            background-color: #f3f3f3f3;
-            border: none;
-            cursor: pointer;
-            border-bottom: 1px solid;
-            width: 100vw;
-            padding: 0 0 3% 0;
-            text-align: left;
-            outline: none;
-            transition: 0.4s;
-            font-size: 10pt;
-            margin-left: -1%;
-        }
-        .pergunta.active{
-            color: #b60606f3;
-        }
-        .resposta{
-            font-size: 9pt;;
-            display: none;
-            
-            padding: 0 0 0 2.8%;
-            border-bottom: 1px solid;
 
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top, #1f2937 0%, var(--bg) 40%);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            padding: 32px 5vw 64px;
         }
-        .resposta.show{
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .brand span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: clamp(1.6rem, 3vw, 2.5rem);
+            font-weight: 700;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 24px;
+            background: var(--surface);
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .user-card img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .user-card strong {
             display: block;
-            color: #400010;
-        }
-        div.resposta{
-            max-height:0;
-            overflow: hidden;
-            transition: o.6s ease-in-out;
-            padding: 0 18px;
-            opacity:0;
-
-            padding: 0 18px;
- 
-        }
-        div.resposta.show{
-            opacity: 1;
-            max-width: 500px;
+            font-size: 1rem;
         }
 
-        button.pergunta:after {
-            content: "";
-            border: solid transparent;
-            box-shadow: 5px -5px 0 0px #400010 inset;
-            border-width: 0 0 9px 9px;
-            width:9px;    /*o tamanho do contende */
-            height:9px;
-            float: left;
-            transform:rotate(225deg) ;
-            padding: 2px 0 0 3px;
-            margin-top: -0.3%;
-
-          
+        .grid {
+            display: grid;
+            gap: 24px;
         }
-  
-        button.pergunta.active:after{
-            box-shadow: 5px -5px 0 0px #b60606f3 inset; 
-            border-width: 0 0 15px 15px;
-            width:10px;    /*o tamanho do contende */
-            height:10px;
-            float: left;
-            transform:rotate(-45deg) ;
-            padding: 2 0 0 0;
-            margin: 3px 0 0 0;}
-        
-    @keyframes anima {
-                      0%{
-                         transform:scale(1);
-                      }
-                      100%{
-                         transform: scale(1.2);
-                      }
-                     }
-             
-                    .buto1 button{
-                         color: red;
-                     }
-                     
-                   .buto1 button{
-                     animation-name: anima;
-                     animation-duration: 0.5s;
-                     animation-timing-function: ease-out;
-                     animation-iteration-count:infinite ;
-                     animation-direction: alternate;
-                     cursor: pointer;
-                    }
-        
-    </style>
-</head>
 
-<body>
-    
-     <!-- <button class="pergunta">Quais são as formas de pagamento?</button>
-    <p class="resposta">
-        Você pode realizar o pagamento por Cartão de Crédito, Boleto Bancário, PIX e Débito
-        Bancário.
-    </p>
-
-    <button class="pergunta">Como vou receber acesso ao produto?</button>
-    <p class="resposta">
-        Assim que a sua compra for confirmada, você receberá um e-mail com o seu acesso à nossa plataforma. Os
-        pagamentos
-        realizados por boleto, podem demorar até 2 dias úteis para serem confirmados.
-    </p>
-
-    <button class="pergunta">A plataforma de pagamentos é segura?</button>
-    <p class="resposta">
-        Sim, a Kiwify é uma das maiores empresas de pagamento do Brasil. Nossos alunos nunca tiveram nenhum problema de
-        segurança ao realizarem o pagamento.
-    </p>
-
-    <button class="pergunta">O conteúdo é ao vivo ou gravado?</button>
-    <p class="resposta"> O conteúdo do Protocolo Zero Barriga é 100% gravado em PDF, com o material pedagógico completo.</p>
-
-    <button class="pergunta">Em quanto tempo posso perder o peso que preciso?</button>
-    <p class="resposta">
-        Cada organismo funciona de uma maneira diferente, por isso, é difícil estipular um tempo médio para o início da
-        perda de peso. No entanto, é comum que as pessoas comecem a notar diferença no peso em duas semanas.
-    </p>
-    <button class="pergunta">Por quanto tempo vou ter acesso ao material?</button>
-    <p class="resposta">
-        Você terá acesso vitalício a versão 2022 do Protocolo Programa 21D
-
-    </p> <button class="pergunta">Quanto tempo o organismo leva para entrar em processo de emagrecimento?</button>
-    <p class="resposta">
-        O tempo para que o organismo entre por completo em um processo de emagrecimento varia de uma pessoa para outra,
-        podendo ser de alguns dias, ou até mesmo semanas. Além disso, no início é possível que você sinta muito saciada
-        e
-        sem fome, é algo normal.
-    </p>
-
-    <button class="pergunta">O que acontece se eu me arrepender da compra?</button>
-    <p class="resposta">
-        Caso você se arrependa da aquisição do Protocolo Zero Barriga e queria desistir dele, basta entrar em contato
-        com
-        nossa equipe de atendimento, que todos os passos para o cancelamento e a devolução do dinheiro investido lhe
-        serão
-        fornecidos.
-    </p>
-    <button class="pergunta">Moro fora do país, consigo me matricular?</button>
-    <p class="resposta"> Sim, a Kiwify aceita moedas do mundo inteiro e você também pode efetuar o pagamento pelo PayPal.</p> -->
- 
-    <!-- <div style="margin-top: 15%; text-align: center;">
-    <img src="https://www.gratispng.com/png-grseov/download.html" alt="">
-
-            </div>
-              
-             <div class="buto1">
-                         
-                              <div
-                                  style=" 
-                                  width:30%; margin:0 0 10% 0; align-items:  center; text-align: center;">
-                                      <a href="https://pay.kiwify.com.br/pxMrApG" target="_blank">
-                                    <button  style="width: 225%; margin: 45% 0 20% 60%;                          font-size:8pt;
-                                      height: 40px; 
-                                      background: #860321; color: #ffffff;
-                                      border-color: #860321;
-                                      border-radius: 50px;"><b style="font-weight:750 ;">COMEÇAR AGORA (CLIQUE AQUI)</b>
-                                      </button></a> 
-             
-                                 
-                              </div>
-                         
-             </div> -->
-             
-                            
-                         <div style="text-align: center;">
-                <!-- prova social -->
-                <img src="img/adriana (1).png" alt="">
-
-                    
-             </div> 
-
-
-<div > 
-    <!-- final  -->
-        <img src="img/final.png" alt="">
-        
-</div>
-            
-            
-       </div>
-    
-
-
-
-
-
-    <script>
-        let movi = document.getElementsByClassName("pergunta");
-        let v;
-
-        for (v = 0; v < movi.length; v++ ){
-            movi[v].onclick = function(){
-                this.classList.toggle("active");
-                this.nextElementSibling.classList.toggle("show")
-
+        @media (min-width: 960px) {
+            .grid-columns-2 {
+                grid-template-columns: 3fr 2fr;
             }
         }
-    
-    </script>
 
- 
+        @media (min-width: 1200px) {
+            .grid-columns-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
 
+        .card {
+            background: var(--surface);
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .wallet-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .wallet-tile {
+            padding: 16px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.18), rgba(148, 163, 184, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .wallet-tile span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.08em;
+        }
+
+        .wallet-tile strong {
+            font-size: 1.35rem;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button, .ghost-button {
+            font-family: inherit;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .primary {
+            background: var(--accent);
+            color: var(--accent-contrast);
+            box-shadow: 0 18px 24px -20px rgba(255, 51, 102, 0.9);
+        }
+
+        .secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .ghost-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(148, 163, 184, 0.3);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .trade-card {
+            padding-bottom: 32px;
+        }
+
+        .trade-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        @media (min-width: 960px) {
+            .trade-grid {
+                grid-template-columns: minmax(0, 1.6fr) minmax(240px, 1fr);
+                align-items: stretch;
+            }
+        }
+
+        .trade-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .trade-actions {
+            background: rgba(18, 23, 37, 0.65);
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .trade-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .trade-field label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+        }
+
+        .trade-actions select,
+        .trade-actions input[type="number"] {
+            background: var(--surface-light);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .trade-actions select:focus,
+        .trade-actions input[type="number"]:focus {
+            outline: 2px solid rgba(255, 51, 102, 0.35);
+            outline-offset: 2px;
+        }
+
+        .trade-buttons {
+            display: grid;
+            gap: 12px;
+        }
+
+        @media (min-width: 520px) {
+            .trade-buttons {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .trade-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 18px 16px;
+            border-radius: 16px;
+            border: none;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(10, 15, 24, 0.85);
+            box-shadow: 0 24px 38px -28px rgba(15, 23, 42, 0.9);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .trade-button strong {
+            font-size: 1.1rem;
+            letter-spacing: normal;
+        }
+
+        .trade-button span {
+            font-size: 0.75rem;
+            color: rgba(10, 15, 24, 0.7);
+        }
+
+        .trade-button.call {
+            background: linear-gradient(135deg, rgba(50, 213, 131, 0.95), rgba(50, 213, 131, 0.7));
+        }
+
+        .trade-button.put {
+            background: linear-gradient(135deg, rgba(249, 112, 102, 0.95), rgba(249, 112, 102, 0.7));
+        }
+
+        .trade-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .trade-button.call:hover {
+            box-shadow: 0 28px 45px -28px rgba(50, 213, 131, 0.55);
+        }
+
+        .trade-button.put:hover {
+            box-shadow: 0 28px 45px -28px rgba(249, 112, 102, 0.55);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            min-height: 320px;
+            background: radial-gradient(circle at top right, rgba(255, 51, 102, 0.12), rgba(10, 15, 24, 0.85));
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            padding: 16px;
+            overflow: hidden;
+        }
+
+        .chart-wrapper canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .chart-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            pointer-events: none;
+            background: radial-gradient(circle at center, rgba(18, 24, 38, 0.2), rgba(18, 24, 38, 0.7));
+            border-radius: 18px;
+            opacity: 0.75;
+            transition: opacity 0.3s ease;
+        }
+
+        .chart-overlay.active {
+            opacity: 1;
+        }
+
+        .chart-overlay .overlay-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .chart-overlay .overlay-timer {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--accent-contrast);
+            text-shadow: 0 0 18px rgba(10, 15, 30, 0.75);
+        }
+
+        .chart-overlay .overlay-meta {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .chart-overlay.critical .overlay-timer {
+            color: var(--negative);
+            text-shadow: 0 0 18px rgba(249, 112, 102, 0.65);
+        }
+
+        .chart-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .chart-controls label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .chart-controls select,
+        .chart-controls input[type="range"],
+        .chart-controls input[type="number"] {
+            background: var(--surface-light);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .chart-controls input[type="range"] {
+            width: 140px;
+        }
+
+        .positions,
+        .investor-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .position-card {
+            padding: 16px;
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .position-card header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 0;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .badge.call {
+            background: rgba(50, 213, 131, 0.18);
+            color: var(--positive);
+        }
+
+        .badge.put {
+            background: rgba(249, 112, 102, 0.18);
+            color: var(--negative);
+        }
+
+        .history-table, .investor-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .history-table th,
+        .history-table td,
+        .investor-table th,
+        .investor-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        }
+
+        .history-table tbody tr:hover,
+        .investor-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .status-dot {
+            display: inline-flex;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--positive);
+            box-shadow: 0 0 6px rgba(50, 213, 131, 0.7);
+            margin-right: 8px;
+        }
+
+        .status-dot.offline {
+            background: var(--negative);
+            box-shadow: 0 0 6px rgba(249, 112, 102, 0.7);
+        }
+
+        .message-area {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .message-area strong {
+            color: var(--accent);
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="brand">
+        <span>Neon Binary Suite</span>
+        <h1>Painel de Investimentos Binários</h1>
+    </div>
+    <div class="user-card">
+        <img src="https://i.pravatar.cc/300?img=32" alt="Avatar do trader">
+        <div>
+            <strong>Carla Duarte</strong>
+            <small style="color: var(--text-secondary);">Gestora Sênior · ID TR-8921</small>
+        </div>
+    </div>
+</header>
+
+<section class="grid grid-columns-2">
+    <article class="card">
+        <h2>Resumo da carteira</h2>
+        <div class="wallet-summary" id="walletSummary">
+            <div class="wallet-tile">
+                <span>Saldo disponível</span>
+                <strong id="walletBalance">R$ 0,00</strong>
+                <small style="color: var(--positive);">Liquidez imediata</small>
+            </div>
+            <div class="wallet-tile">
+                <span>Capital alocado</span>
+                <strong id="walletAllocated">R$ 0,00</strong>
+                <small>Operações em curso</small>
+            </div>
+            <div class="wallet-tile">
+                <span>Resultado 24h</span>
+                <strong id="walletDaily">R$ 0,00</strong>
+                <small id="walletDailyLabel">Mantendo estabilidade</small>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="primary" type="button" id="depositBtn">Adicionar fundos</button>
+            <button class="secondary" type="button" id="withdrawBtn">Sacar</button>
+            <span class="ghost-button">Taxa de risco dinâmica</span>
+        </div>
+        <p class="message-area" id="walletMessage">Selecione um ativo e defina o valor da operação para começar.</p>
+    </article>
+
+    <article class="card trade-card">
+        <h2>Terminal de operações</h2>
+        <div class="trade-grid">
+            <div class="trade-chart">
+                <div class="chart-controls">
+                    <label>
+                        Intervalo
+                        <select id="timeframeSelect">
+                            <option value="20">1 minuto</option>
+                            <option value="40" selected>5 minutos</option>
+                            <option value="80">15 minutos</option>
+                            <option value="120">1 hora</option>
+                        </select>
+                    </label>
+                    <label>
+                        Volatilidade
+                        <input type="range" id="volatilityRange" min="5" max="25" value="12">
+                    </label>
+                    <button class="ghost-button" type="button" id="refreshChart">Atualizar gráfico</button>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="priceChart" height="320"></canvas>
+                    <div class="chart-overlay" id="chartOverlay">
+                        <span class="overlay-label">Próxima expiração</span>
+                        <span class="overlay-timer" id="chartTimer">--:--</span>
+                        <span class="overlay-meta" id="chartTimerMeta">Nenhuma operação ativa</span>
+                    </div>
+                </div>
+                <p class="message-area" id="chartMessage">Ajuste o intervalo e monitore a contagem regressiva para sincronizar suas entradas.</p>
+            </div>
+            <div class="trade-actions">
+                <div class="trade-field">
+                    <label for="assetSelect">Ativo</label>
+                    <select id="assetSelect">
+                        <option value="EURUSD">EUR/USD</option>
+                        <option value="BTCUSD">BTC/USD</option>
+                        <option value="WDOQ24">Mini Dólar</option>
+                        <option value="IBOV">IBOVESPA</option>
+                    </select>
+                </div>
+                <div class="trade-field">
+                    <label for="amountInput">Valor (R$)</label>
+                    <input type="number" id="amountInput" min="10" step="10" value="100">
+                </div>
+                <div class="trade-field">
+                    <label for="expirySelect">Expiração (min)</label>
+                    <select id="expirySelect">
+                        <option value="1">1</option>
+                        <option value="5" selected>5</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+                <div class="trade-buttons">
+                    <button type="button" id="callBtn" class="trade-button call">
+                        <strong>Call</strong>
+                        <span>Comprar</span>
+                    </button>
+                    <button type="button" id="putBtn" class="trade-button put">
+                        <strong>Put</strong>
+                        <span>Vender</span>
+                    </button>
+                </div>
+                <p class="message-area" id="tradeMessage">Defina o ativo, valor e expiração e utilize os botões ao lado para enviar ordens instantâneas.</p>
+            </div>
+        </div>
+    </article>
+</section>
+
+<section class="grid grid-columns-3">
+    <article class="card">
+        <h2>Operações em andamento</h2>
+        <div class="positions" id="openPositions">
+            <p style="color: var(--text-secondary); margin: 0;">Nenhuma posição aberta no momento.</p>
+        </div>
+    </article>
+
+    <article class="card" style="overflow-x: auto;">
+        <h2>Histórico recente</h2>
+        <table class="history-table" id="historyTable">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Ativo</th>
+                <th>Direção</th>
+                <th>Valor</th>
+                <th>Expiração</th>
+                <th>Resultado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1251</td>
+                <td>EUR/USD</td>
+                <td><span class="badge call">Call</span></td>
+                <td>R$ 250,00</td>
+                <td>5 min</td>
+                <td style="color: var(--positive);">+82%</td>
+            </tr>
+            <tr>
+                <td>1250</td>
+                <td>IBOV</td>
+                <td><span class="badge put">Put</span></td>
+                <td>R$ 300,00</td>
+                <td>15 min</td>
+                <td style="color: var(--negative);">-100%</td>
+            </tr>
+            </tbody>
+        </table>
+    </article>
+
+    <article class="card" style="overflow-x: auto;">
+        <h2>Identificação de investidores</h2>
+        <table class="investor-table" id="investorTable">
+            <thead>
+            <tr>
+                <th>Investidor</th>
+                <th>ID</th>
+                <th>Perfil</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Juliana Sá</td>
+                <td>TR-8042</td>
+                <td>Moderado</td>
+                <td><span class="status-dot"></span>Ativo</td>
+            </tr>
+            <tr>
+                <td>Marcos Lira</td>
+                <td>TR-7738</td>
+                <td>Agressivo</td>
+                <td><span class="status-dot"></span>Ativo</td>
+            </tr>
+            <tr>
+                <td>Rita Franco</td>
+                <td>TR-7214</td>
+                <td>Conservador</td>
+                <td><span class="status-dot offline"></span>Revisão</td>
+            </tr>
+            </tbody>
+        </table>
+    </article>
+</section>
+
+<footer>
+    Desenvolvido para simulações estratégicas de operações binárias. Gerencie riscos, acompanhe a carteira e identifique investidores de forma integrada.
+</footer>
+
+<script>
+    const wallet = {
+        balance: 12500,
+        allocated: 0,
+        daily: 320
+    };
+
+    let chartInstance;
+    let positionCounter = 1330;
+    const openPositions = [];
+    const priceChartElement = document.getElementById('priceChart');
+    const walletMessage = document.getElementById('walletMessage');
+    const tradeMessage = document.getElementById('tradeMessage');
+    const chartMessage = document.getElementById('chartMessage');
+    const chartTimer = document.getElementById('chartTimer');
+    const chartTimerMeta = document.getElementById('chartTimerMeta');
+    const chartOverlay = document.getElementById('chartOverlay');
+    let chartTimerInterval = null;
+
+    function currency(value) {
+        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function formatPrice(value, decimals) {
+        return value.toLocaleString('pt-BR', {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals
+        });
+    }
+
+    function getAssetConfig(code) {
+        const configs = {
+            EURUSD: { base: 1.104, decimals: 4 },
+            BTCUSD: { base: 27450, decimals: 2 },
+            WDOQ24: { base: 5.12, decimals: 3 },
+            IBOV: { base: 116500, decimals: 0 }
+        };
+        return configs[code] || configs.EURUSD;
+    }
+
+    function getSelectedAsset() {
+        const select = document.getElementById('assetSelect');
+        const fallback = { code: 'EURUSD', label: 'EUR/USD', ...getAssetConfig('EURUSD') };
+        if (!select) {
+            return fallback;
+        }
+        const code = select.value;
+        const label = select.options[select.selectedIndex]?.text || code;
+        const config = getAssetConfig(code);
+        return { code, label, ...config };
+    }
+
+    function updateWalletTiles() {
+        document.getElementById('walletBalance').textContent = currency(wallet.balance);
+        document.getElementById('walletAllocated').textContent = currency(wallet.allocated);
+        const dailyElement = document.getElementById('walletDaily');
+        dailyElement.textContent = currency(wallet.daily);
+        const label = document.getElementById('walletDailyLabel');
+        if (wallet.daily >= 0) {
+            dailyElement.style.color = getComputedStyle(document.documentElement).getPropertyValue('--positive');
+            label.textContent = 'Performance positiva nas últimas 24h';
+        } else {
+            dailyElement.style.color = getComputedStyle(document.documentElement).getPropertyValue('--negative');
+            label.textContent = 'Revise sua estratégia de risco';
+        }
+    }
+
+    function generateDataPoints(points, base = 1.104, volatility = 12, decimals = 4) {
+        const data = [];
+        let current = base;
+        for (let i = 0; i < points; i++) {
+            const percentage = (Math.random() - 0.5) * (volatility / 600);
+            current = Math.max(base * 0.4, current * (1 + percentage));
+            data.push(Number(current.toFixed(decimals)));
+        }
+        return data;
+    }
+
+    function generateLabels(points) {
+        const labels = [];
+        const now = new Date();
+        for (let i = points - 1; i >= 0; i--) {
+            const time = new Date(now.getTime() - i * 60000);
+            labels.push(time.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
+        }
+        return labels;
+    }
+
+    function drawChart() {
+        const points = Number(document.getElementById('timeframeSelect').value);
+        const volatility = Number(document.getElementById('volatilityRange').value);
+        const asset = getSelectedAsset();
+        const data = generateDataPoints(points, asset.base, volatility, asset.decimals);
+        const labels = generateLabels(points);
+
+        if (chartInstance) {
+            chartInstance.data.labels = labels;
+            chartInstance.data.datasets[0].data = data;
+            chartInstance.data.datasets[0].label = asset.label;
+            chartInstance.options.plugins.tooltip.callbacks.label = context => `Preço: ${formatPrice(context.parsed.y, asset.decimals)}`;
+            chartInstance.update();
+            chartMessage.textContent = `Gráfico de ${asset.label} atualizado com ${points} candles e volatilidade ${volatility}.`;
+            return;
+        }
+
+        chartInstance = new Chart(priceChartElement, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: asset.label,
+                        data,
+                        borderColor: 'rgba(255, 51, 102, 0.85)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: {
+                            target: 'origin',
+                            above: 'rgba(255, 51, 102, 0.08)'
+                        },
+                        pointRadius: 0,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: 'rgba(255, 255, 255, 0.8)'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#94a3b8'
+                        },
+                        border: {
+                            dash: [4, 4]
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: context => `Preço: ${formatPrice(context.parsed.y, asset.decimals)}`
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+        chartMessage.textContent = `Gráfico de ${asset.label} carregado com ${points} candles e volatilidade ${volatility}.`;
+    }
+
+    function renderOpenPositions() {
+        const container = document.getElementById('openPositions');
+        container.innerHTML = '';
+        if (!openPositions.length) {
+            container.innerHTML = '<p style="color: var(--text-secondary); margin: 0;">Nenhuma posição aberta no momento.</p>';
+            return;
+        }
+
+        openPositions.forEach(position => {
+            const expiryTime = new Date(position.expiresAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            const card = document.createElement('div');
+            card.className = 'position-card';
+            card.innerHTML = `
+                <div>
+                    <header>
+                        <strong>${position.asset}</strong>
+                        <span class="badge ${position.direction.toLowerCase()}">${position.direction}</span>
+                    </header>
+                    <small style="color: var(--text-secondary);">Entrada ${formatPrice(position.entryPrice, position.decimals)} · ${currency(position.amount)} · expira às ${expiryTime}</small>
+                </div>
+                <button class="primary" type="button" data-id="${position.id}">Encerrar</button>
+            `;
+            card.querySelector('button').addEventListener('click', () => closePosition(position.id));
+            container.appendChild(card);
+        });
+    }
+
+    function closePosition(id, auto = false) {
+        const index = openPositions.findIndex(item => item.id === id);
+        if (index === -1) return;
+        const [position] = openPositions.splice(index, 1);
+        const outcome = Math.random() > 0.48 ? 'win' : 'loss';
+        const payout = outcome === 'win' ? position.amount * 1.82 : 0;
+        wallet.allocated -= position.amount;
+        wallet.balance += payout;
+        const result = outcome === 'win' ? `lucro de ${currency(payout - position.amount)}` : 'perda total';
+        walletMessage.innerHTML = `Operação ${position.direction} em ${position.asset} ${auto ? 'expirou automaticamente' : 'foi encerrada'} com <strong>${result}</strong>.`;
+        appendHistory(position, outcome, payout);
+        updateWalletTiles();
+        renderOpenPositions();
+        ensureChartTimer();
+    }
+
+    function appendHistory(position, outcome, payout) {
+        const historyBody = document.querySelector('#historyTable tbody');
+        const row = historyBody.insertRow(0);
+        row.innerHTML = `
+            <td>${++positionCounter}</td>
+            <td>${position.asset}</td>
+            <td><span class="badge ${position.direction.toLowerCase()}">${position.direction}</span></td>
+            <td>${currency(position.amount)}</td>
+            <td>${position.expiry} min</td>
+            <td style="color: ${outcome === 'win' ? 'var(--positive)' : 'var(--negative)'};">${outcome === 'win' ? '+' : '-'}${(outcome === 'win' ? (payout / position.amount - 1) * 100 : 100).toFixed(0)}%</td>
+        `;
+    }
+
+    function tickChartTimer() {
+        if (!chartTimer || !chartTimerMeta) {
+            return;
+        }
+
+        if (!openPositions.length) {
+            if (chartOverlay) {
+                chartOverlay.classList.remove('active');
+                chartOverlay.classList.remove('critical');
+            }
+            chartTimer.textContent = '--:--';
+            chartTimerMeta.textContent = 'Nenhuma operação ativa';
+            return;
+        }
+
+        const soonest = openPositions.reduce((previous, current) => current.expiresAt < previous.expiresAt ? current : previous);
+        const remainingSeconds = Math.floor((soonest.expiresAt - Date.now()) / 1000);
+
+        if (remainingSeconds <= 0) {
+            closePosition(soonest.id, true);
+            return;
+        }
+
+        const minutes = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+        const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
+        chartTimer.textContent = `${minutes}:${seconds}`;
+        const expiryTime = new Date(soonest.expiresAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        chartTimerMeta.textContent = `${soonest.direction} · ${soonest.asset} · ${expiryTime}`;
+        if (chartOverlay) {
+            chartOverlay.classList.add('active');
+            if (remainingSeconds <= 30) {
+                chartOverlay.classList.add('critical');
+            } else {
+                chartOverlay.classList.remove('critical');
+            }
+        }
+    }
+
+    function ensureChartTimer() {
+        if (openPositions.length) {
+            if (!chartTimerInterval) {
+                chartTimerInterval = setInterval(tickChartTimer, 1000);
+            }
+            tickChartTimer();
+        } else {
+            if (chartTimerInterval) {
+                clearInterval(chartTimerInterval);
+                chartTimerInterval = null;
+            }
+            if (chartOverlay) {
+                chartOverlay.classList.remove('active');
+                chartOverlay.classList.remove('critical');
+            }
+            if (chartTimer) {
+                chartTimer.textContent = '--:--';
+            }
+            if (chartTimerMeta) {
+                chartTimerMeta.textContent = 'Nenhuma operação ativa';
+            }
+        }
+    }
+
+    function openTrade(direction) {
+        const amount = Number(document.getElementById('amountInput').value);
+        const asset = getSelectedAsset();
+        const expiryMinutes = Number(document.getElementById('expirySelect').value);
+
+        if (Number.isNaN(amount) || amount < 10) {
+            tradeMessage.innerHTML = '<strong>Valor inválido.</strong> Defina pelo menos R$ 10,00 para operar.';
+            return;
+        }
+
+        if (amount > wallet.balance) {
+            tradeMessage.innerHTML = '<strong>Saldo insuficiente.</strong> Ajuste o valor da ordem ou deposite fundos.';
+            return;
+        }
+
+        if (Number.isNaN(expiryMinutes) || expiryMinutes <= 0) {
+            tradeMessage.innerHTML = '<strong>Expiração inválida.</strong> Escolha um tempo de contrato válido.';
+            return;
+        }
+
+        wallet.balance -= amount;
+        wallet.allocated += amount;
+        const entrySeries = chartInstance ? chartInstance.data.datasets[0].data.slice(-1)[0] : generateDataPoints(1, asset.base, 12, asset.decimals)[0];
+        const entryPrice = Number(entrySeries);
+        const newPosition = {
+            id: ++positionCounter,
+            asset: asset.label,
+            assetCode: asset.code,
+            direction,
+            amount,
+            expiry: expiryMinutes,
+            entryPrice,
+            decimals: asset.decimals,
+            expiresAt: Date.now() + expiryMinutes * 60000
+        };
+        openPositions.push(newPosition);
+        tradeMessage.innerHTML = `Ordem <strong>${direction}</strong> em ${asset.label} aberta com sucesso. Acompanhe a contagem regressiva no gráfico.`;
+        updateWalletTiles();
+        renderOpenPositions();
+        ensureChartTimer();
+    }
+
+    function attachEvents() {
+        document.getElementById('timeframeSelect').addEventListener('change', drawChart);
+        document.getElementById('volatilityRange').addEventListener('input', drawChart);
+        document.getElementById('refreshChart').addEventListener('click', drawChart);
+        document.getElementById('assetSelect').addEventListener('change', drawChart);
+        document.getElementById('callBtn').addEventListener('click', () => openTrade('Call'));
+        document.getElementById('putBtn').addEventListener('click', () => openTrade('Put'));
+        document.getElementById('depositBtn').addEventListener('click', () => {
+            wallet.balance += 1000;
+            walletMessage.innerHTML = 'Depósito rápido de R$ 1.000,00 creditado com sucesso.';
+            updateWalletTiles();
+        });
+        document.getElementById('withdrawBtn').addEventListener('click', () => {
+            const value = Math.min(500, wallet.balance);
+            wallet.balance -= value;
+            walletMessage.innerHTML = `Solicitação de saque de ${currency(value)} enviada para a conta cadastrada.`;
+            updateWalletTiles();
+        });
+
+        priceChartElement.addEventListener('click', event => {
+            if (!chartInstance) return;
+            const points = chartInstance.getElementsAtEventForMode(event, 'nearest', { intersect: false }, false);
+            if (points.length) {
+                const point = points[0];
+                const price = chartInstance.data.datasets[point.datasetIndex].data[point.index];
+                const time = chartInstance.data.labels[point.index];
+                const asset = getSelectedAsset();
+                chartMessage.textContent = `Zona marcada às ${time} com preço ${formatPrice(price, asset.decimals)} em ${asset.label}. Considere este nível para novas entradas.`;
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateWalletTiles();
+        drawChart();
+        attachEvents();
+        ensureChartTimer();
+    });
+</script>
 </body>
-
 </html>
